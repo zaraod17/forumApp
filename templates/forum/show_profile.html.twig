@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container item">
+        <div class="row align-items-center text-light">
+            <div class="d-inline">
+                <img class="mr-3" src="/assets/img/user.jpg" alt="Generic placeholder image"/>
+                <div class="d-inline-block">
+                    <h3 class="d-block ml-5">{{ user.username }}</h3>
+                    {% if app.user %}
+                    <a class="d-block" href="{{ path('change-password', {"id": app.user.id})}}">Change password</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center item">
+            <div class="col ">
+                <div class="card bg-dark text-light">
+                    <div class="card-header">
+                        Posts
+                    </div>
+                    <div class="card-body bg-dark">
+                        <ul class="list-group list-group-flush bg-dark">
+                            {% for post in posts %}
+                                <li class="list-group-item bg-dark">
+                                    <a href="{{ path('show-post', {"id": post.id, "topicId": post.topic.id}) }}">{{ post.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center item">
+            <div class="col">
+                <div class="card bg-dark">
+                    <div class="card-header bg-dark text-light">
+                        Comments
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for comment in comments %}
+                                <li class="list-group-item bg-dark">
+                                    <a href=" {{ path('show-post', {"id": comment.post.id, "topicId": comment.topic.id}) }}">{{ comment.content|raw }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

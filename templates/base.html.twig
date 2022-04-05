@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<head style="background-color: #9fcdff">
+    <meta charset="UTF-8">
+    <title>{% block title %}MyForum{% endblock %}</title>
+
+    {% block stylesheets %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    {% endblock %}
+
+    <style>
+       html, body {
+            background-image: url("https://cdn.hipwallpaper.com/i/28/83/6DGhkb.jpg");
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    </style>
+
+</head>
+{% block menu %}
+
+<div class="container">
+
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark shadow-sm">
+        <h5 class="my-0 mr-md-auto bg-dark"><a class="text-light" href="{{ path('front') }}"><img style="height: 40px; width: 100px;" src="https://static1.squarespace.com/static/58ffa7cae4fcb5b3f1e21577/t/58ffaa9f20099e9f05827f23/1606253865955/"></a></h5>
+
+        <div style="width: 10px"></div>
+
+        <div style="width: 455px">
+            <form method="GET" class="form-inline my-0 mr-md-auto" action="{{path('search-results')}}">
+                <input class="form-control mr-sm-2 h-50 w-50 d-inline" name="query" type="search" placeholder="Search post" aria-label="Search post" >
+                <button class="btn btn-outline-success my-2 my-sm-0 h-50 w-25 d-inline" type="submit">Search</button>
+            </form>
+
+        </div>
+
+        <div style="width: 440px"></div>
+
+        {% if app.user == false %}
+            <div class="float-right pl-3">
+            <a class="btn btn-primary mr-0  " href="{{ path('app_login') }}">Zaloguj się</a>
+            <a class="btn btn-primary  mr-1 " href="{{ path('app_register') }}">Zarejestruj się</a>
+            </div>
+        {% endif %}
+
+        {% if app.user %}
+            <div style="width: 910px"></div>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-primary mr-0  " href="{{ path('admin') }}">Admin</a>
+            {% endif %}
+            <a class="btn btn-primary " href="{{ path('app_logout') }}">Logout</a>
+        {% endif %}
+
+        {% endblock %}
+    </div>
+
+
+    <body >
+    {% block main %}
+
+        <div class="container-fluid " >
+            <table class="table table-bordered table-dark  small-text-left ">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Forum</th>
+                            <th scope="col">Opis</th>
+                            <th scope="col">Posty</th>
+                            <th scope="col">Komentarze</th>
+                            <th scope="col">Ostatni post</th>
+                        </tr>
+                    </thead>
+                <tbody>
+
+                {% for topic in topics %}
+                    <tr>
+                        <td><img style="height: 40px; width: 40px;" src="{{ topic.imgURL }}"></td>
+                        <th scope="row"><a href="{{ path('post-list',{'id': topic.id}) }}">{{ topic.title }}</a> </th>
+                        <td>{{ topic.description }}</td>
+                        <td>{{ topic.getPosts|length}}</td>
+                        <td>{{ topic.getComments|length }}</td>
+
+                        {% for post in posts %}
+                            {% if  post.topic.id  ==  topic.id  %}
+                                <td><a href="{{ path('show-post', {"topicId": topic.id, "id": post.id })}}">{{ post.title }}</a> </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+
+
+            <div style="height: 70px"></div>
+
+            <!-- Copyright -->
+            <div class="card-footer text-center py-3 text-light bg-dark position-relative">© 2020 Copyright:
+                <a href="http://localhost:8000/"> MyForum.com</a>
+            </div>
+            <!-- Copyright -->
+
+
+
+    {% endblock %}
+
+    {% block javascripts %}
+
+    {% endblock %}
+    </body>
+</div>
+
+
+</html>
