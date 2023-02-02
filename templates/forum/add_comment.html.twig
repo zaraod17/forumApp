@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container item text-light" >
+        {{ form_start(form) }}
+
+
+        <div>{{ form_label(form.content) }}</div>
+
+        <div>
+            {{ form_widget(form.content, {'attr': {'placeholder': "Content of the comment", 'rows': '12', 'cols': '100'}}) }}
+        </div>
+
+
+        {{ form_end(form) }}
+
+
+    </div>
+
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

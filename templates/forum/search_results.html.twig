@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+
+    {% if posts %}
+    <div class=" container-fluid">
+        <div class="row align-items-center">
+            <div class="col">
+                <ul class="list-group bg-dark">
+                    {% for post in posts %}
+                        <li class="list-group-item bg-dark ">
+                            <a href="{{  path('show-post', {"id": post.id, "topicId": post.topic.id }) }}">
+                                <span id="list-post-title">{{ post.title }}</span>
+                            </a>
+                            <small><div style="text-align:right;">Posted by <a href=" {{ path('show-profile', {"userId": post.user.id }) }} ">{{ post.username }}</a></div></small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-light">{{ knp_pagination_render(posts) }}</div>
+    {% else %}
+    <h1 class="jumbotron-heading text-light">No results were found</h1>
+    {% endif %}
+{% endblock %}
+
